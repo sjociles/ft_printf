@@ -6,11 +6,13 @@
 /*   By: sjociles <sjociles@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:18:05 by sjociles          #+#    #+#             */
-/*   Updated: 2022/05/22 15:57:33 by sjociles         ###   ########.fr       */
+/*   Updated: 2022/05/27 16:58:26 by sjociles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libftprintf.h"
+#include "inc/libftprintf.h"
+#include <stdio.h>
+
 
 static int	ft_printchar(int c)
 {
@@ -31,7 +33,7 @@ static int	ft_printstr(char *str)
 	i = 0;
 	if (str == NULL)
 	{
-		ft_putstr("(NULL)");
+		ft_putstr("(NULL)"); // funcion recursiva?
 		return (6);
 	}
 	while (str[i])
@@ -101,6 +103,20 @@ static int	ft_printdecimal(unsigned int n)
 {
 
 }
+
+static int	ft_printhex(unsigned int n, const char format)
+{
+	if (format == 'x')
+	{
+		ft_printptr(n);
+	}
+	else if (format == 'X')
+	{
+		ft_printptr(n);
+		if 
+	}
+
+}
 */
 static int	ft_conversion(va_list args, const char format)
 {
@@ -108,19 +124,19 @@ static int	ft_conversion(va_list args, const char format)
 
 	len = 0;
 	if (format == 'c')
-		len = ft_printchar(va_arg(args, int));
+		len += ft_printchar(va_arg(args, int));
 	else if (format == 's')
-		len = ft_printstr(va_arg(args, char *));
+		len += ft_printstr(va_arg(args, char *));
 	else if (format == 'p')
-		len = ft_printptr(va_arg(args, unsigned long long)); // por qué long long?
+		len += ft_printptr(va_arg(args, unsigned long long)); // por qué long long?
 	else if (format == 'd' || format == 'i')
-		len = ft_printnbr(va_arg(args, int));
+		len += ft_printnbr(va_arg(args, int));
 /*	else if (format == 'x' || format == 'X')
-		len = ft_printhex(va_arg(args, unsigned int), format);
+		len += ft_printhex(va_arg(args, unsigned int), format);
 	else if (format == 'u')
-		len = ft_printdecimal(va_arg(args, unsigned int));
+		len += ft_printdecimal(va_arg(args, unsigned int));
 */	else if (format == '%')
-		len = ft_printchar('%');
+		len += ft_printchar('%');
 	return (len);
 }
 
@@ -137,7 +153,7 @@ int ft_printf(char const *format, ...)
 	{
 		if (format[i] == '%')
 		{
-			len = ft_conversion(args, format[i + 1]); // 1 para coger el identificativo
+			len += ft_conversion(args, format[i + 1]); // 1 para coger el identificativo
 			i++;
 		}
 		else
@@ -159,6 +175,7 @@ int	main ()
 	ft_printf("%s\n", str);
 	ft_printf("%p\n", *ptr);
 	ft_printf("%%\n");
-	ft_printf("%d\n", num);
+	printf("%X\n", 62);
+	ft_printf("%i\n", num);
 	return (0);
 }
