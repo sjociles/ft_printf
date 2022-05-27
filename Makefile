@@ -1,13 +1,13 @@
 
-NAME = libftprintf.a
-
+NAME = print.a
+# change name to libftprintf.a
 SRCS = ft_printf.c 
 
 OBJS = $(SRCS:%.c=%.o)
 
-HEADER = libftprintf.h
+HEADER = includes/libftprintf.h
 
-INCLUDE = include
+INCLUDE = includes
 
 CC = gcc
 
@@ -24,13 +24,13 @@ YELLOW = \033[0;93m
 
 %.o : %.c
 	@echo "$(YELLOW)Compiling: $< $(DEF_COLOR)"
-	@${CC} ${CFLAGS} $(INCLUDE) -c $< -o $@
+	@${CC} ${CFLAGS} -I $(INCLUDE) -c $< -o $@
 
 all: ${NAME}
 
 ${NAME}: ${OBJS} ${HEADER}
-	@ar -crs ${NAME} ${OBJS}
-	@ranlib $(NAME)
+#	@ar -crs ${NAME} ${OBJS}
+#	@ranlib $(NAME)
 	@echo "$(GREEN)ft_printf compiled!$(DEF_COLOR)"
 
 clean:

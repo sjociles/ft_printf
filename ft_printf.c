@@ -42,6 +42,66 @@ static int	ft_printstr(char *str)
 	return (i);
 }
 
+static int	ft_printnbr(int n)
+{
+	char	*num;
+	
+	num = ft_itoa(n);
+	//free num?
+	return (ft_printstr(num));
+}
+
+static int	ft_printptrlen(unsigned long long n)
+{
+	int	len;
+
+	len = 0;
+	while (n != 0)
+	{
+		len++;
+		n = n / 16;
+	}
+	return (len);
+}
+
+static void	ft_ptrhex(unsigned long long n)
+{		
+	if (n >= 16)
+	{
+		ft_ptrhex(n / 16);
+		ft_ptrhex(n % 16);
+	}
+	else
+	{
+		if (n <= 9)
+			ft_putchar_fd((n + '0'), 1);
+		else
+			ft_putchar_fd((n - 10 + 'a'), 1);
+	}
+}
+
+static int	ft_printptr(unsigned long long ptr)
+{
+	int	len;
+
+	len = 0;
+	len += write(1, "0x", 2);
+	if (ptr == 0)
+		len += write(1, "0", 1);
+	else
+	{
+		ft_ptrhex(ptr);
+		len += ft_printptrlen(ptr);
+	}
+	return (len);
+}
+
+/*
+static int	ft_printdecimal(unsigned int n)
+{
+
+}
+*/
 static int	ft_conversion(va_list args, const char format)
 {
 	int	len;
@@ -51,11 +111,11 @@ static int	ft_conversion(va_list args, const char format)
 		len = ft_printchar(va_arg(args, int));
 	else if (format == 's')
 		len = ft_printstr(va_arg(args, char *));
-/*	else if (format == 'p')
+	else if (format == 'p')
 		len = ft_printptr(va_arg(args, unsigned long long)); // por qué long long?
 	else if (format == 'd' || format == 'i')
 		len = ft_printnbr(va_arg(args, int));
-	else if (format == 'x' || format == 'X')
+/*	else if (format == 'x' || format == 'X')
 		len = ft_printhex(va_arg(args, unsigned int), format);
 	else if (format == 'u')
 		len = ft_printdecimal(va_arg(args, unsigned int));
@@ -93,9 +153,12 @@ int	main ()
 	char	c = 't';
 	char	str[] = "caca es mi amiga";
 	char	*ptr = "hola";
+	int		num = -2147483648;
 
 	ft_printf("%c\n", c);
 	ft_printf("%s\n", str);
-	ft_printf("%p\n", ptr);
+	ft_printf("%p\n", *ptr);
+	ft_printf("%%\n");
+	ft_printf("%d\n", num);
 	return (0);
 }
