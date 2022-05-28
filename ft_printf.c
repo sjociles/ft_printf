@@ -6,11 +6,11 @@
 /*   By: sjociles <sjociles@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:18:05 by sjociles          #+#    #+#             */
-/*   Updated: 2022/05/28 17:02:24 by sjociles         ###   ########.fr       */
+/*   Updated: 2022/05/28 18:40:06 by sjociles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/libftprintf.h"
+#include "inc/ft_printf.h"
 #include <stdio.h>
 
 
@@ -100,12 +100,56 @@ static int	ft_printptr(unsigned long long ptr)
 	return (len);
 }
 
-static int	ft_printdecimal(unsigned int n)
+static int	ft_numlen(unsigned int n)
+{
+	unsigned int	len;
+	unsigned int	num;
+
+	len = 0;
+	num = n;
+	while (num != 0)
+	{
+		len++;
+		num = num / 10;
+	}
+	return (len);
+}
+
+char	*ft_uitoa(unsigned int n)
+{
+	char	*num;
+	int		len;
+	
+	len = ft_numlen(n);
+	num = malloc(sizeof(char *) * (len + 1));
+	if (!num)
+		return (0);
+	num[len] = '\0';
+	while (n != 0)
+	{
+		num[len - 1] = n % 10 + 48;
+		n = n / 10;
+		len--;
+	}
+	return (num);
+}
+
+
+static int	ft_printu(unsigned int n)
 {
 	int		len;
 	char	*num;
 
-		
+	len = 0;
+	if (n == 0)
+		len += write(1, "0", 1);
+	else
+	{
+		num = ft_uitoa(n);
+		len += ft_printstr(num);
+		free(num);
+	}
+	return (len);		
 }
 
 static int	ft_hexlen(unsigned int n)
@@ -160,7 +204,7 @@ static int	ft_conversion(va_list args, const char format)
 	else if (format == 'x' || format == 'X')
 		len += ft_printhex(va_arg(args, unsigned int), format);
 	else if (format == 'u')
-		len += ft_printdecimal(va_arg(args, unsigned int));
+		len += ft_printu(va_arg(args, unsigned int));
 	else if (format == '%')
 		len += ft_printchar('%');
 	return (len);
@@ -183,13 +227,13 @@ int ft_printf(char const *format, ...)
 			i++;
 		}
 		else
-			len = ft_printchar(format[i]);
+			len += ft_printchar(format[i]);
 		i++;
 	}
 	va_end(args);
 	return (len);
 }
-
+/*
 int	main ()
 {
 	char	c = 't';
@@ -207,3 +251,4 @@ int	main ()
 	ft_printf("%i\n", num);
 	return (0);
 }
+*/

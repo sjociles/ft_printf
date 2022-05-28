@@ -6,7 +6,7 @@
 /*   By: sjociles <sjociles@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 17:52:26 by sjociles          #+#    #+#             */
-/*   Updated: 2022/05/22 12:51:46 by sjociles         ###   ########.fr       */
+/*   Updated: 2022/05/28 18:40:04 by sjociles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 int		ft_lstsize(t_list *lst);
+int		ft_printf(char const *format, ...);
 void	*ft_memset(void *b, int c, size_t len);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);

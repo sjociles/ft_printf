@@ -1,5 +1,6 @@
 
-NAME = a.out
+#NAME = a.out
+NAME = libftprintf.a
 
 SRCS = ft_printf.c 
 
@@ -7,7 +8,7 @@ OBJS = $(SRCS:%.c=%.o)
 
 LIBFT =	libft
 
-HEADER = inc/libftprintf.h
+HEADER = inc/ft_printf.h
 
 CC = gcc
 
@@ -32,21 +33,23 @@ all: ${NAME}
 
 ${NAME}: ${OBJS} $(HEADER)
 	@make -C $(LIBFT)
-	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME}
-#	borrar linea de arriba al entregar
+	@cp $(LIBFT)/$(LIBFT).a . #needed for final lib
+	@mv $(LIBFT).a $(NAME) #needed for final lib
+#	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME}
 	@echo "$(BLUE)${LIBFT}.a linked $(DEF_COLOR)"
-#	@ar -crs ${NAME} ${OBJS}
-#	@ranlib $(NAME)
+	@ar -crs ${NAME} ${OBJS}
+	@ranlib $(NAME)
 	@echo "$(BOLDGREEN)ft_printf compiled!$(DEF_COLOR)"
 
 clean:
 	@${RM} ${OBJS}
-	@echo "$(CYAN)ft_pintf and libft .o files cleaned!$(DEF_COLOR)"
+	@echo "$(CYAN)ft_pintf and libft objects files cleaned!$(DEF_COLOR)"
 	@${RM} ${LIBFT}/%.o
 
 fclean: clean
 	@${RM} ${NAME}
-	@echo "$(BLUE)ft_printf executable files cleaned!$(DEF_COLOR)"
+	@${RM} $(LIBFT)/${LIBFT}.a
+	@echo "$(BLUE)ft_printf and libft executable files cleaned!$(DEF_COLOR)"
 
 re: fclean all
 	@echo "$(GREEN)Cleaned and rebuilt everything for ft_printf!$(DEF_COLOR)"
