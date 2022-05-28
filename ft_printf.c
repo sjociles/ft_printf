@@ -6,7 +6,7 @@
 /*   By: sjociles <sjociles@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:18:05 by sjociles          #+#    #+#             */
-/*   Updated: 2022/05/27 16:58:26 by sjociles         ###   ########.fr       */
+/*   Updated: 2022/05/28 17:02:24 by sjociles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static int	ft_printchar(int c)
 	return (1);
 }
 
-static void	ft_putstr(char *str)
+/*static void	ft_putstr(char *str)
 {
 	while (*str++ != '\0')
 		write(1, &*str, 1);
 }
-
+*/
 static int	ft_printstr(char *str)
 {
 	int	i;
@@ -33,7 +33,9 @@ static int	ft_printstr(char *str)
 	i = 0;
 	if (str == NULL)
 	{
-		ft_putstr("(NULL)"); // funcion recursiva?
+		ft_strdup("");
+//		write(1, "(NULL)", 1);
+	//	ft_putstr("(NULL)"); // funcion recursiva?
 		return (6);
 	}
 	while (str[i])
@@ -98,26 +100,50 @@ static int	ft_printptr(unsigned long long ptr)
 	return (len);
 }
 
-/*
 static int	ft_printdecimal(unsigned int n)
 {
+	int		len;
+	char	*num;
 
+		
+}
+
+static int	ft_hexlen(unsigned int n)
+{
+	unsigned int	len;
+
+	len = 0;
+	while (n > 0)
+	{
+		len++;
+		n = n / 16;
+	}
+	return (len);
 }
 
 static int	ft_printhex(unsigned int n, const char format)
 {
-	if (format == 'x')
-	{
-		ft_printptr(n);
-	}
-	else if (format == 'X')
-	{
-		ft_printptr(n);
-		if 
-	}
-
+	if (n == 0)
+		write (1, "0", 1);	
+	else
+				if (n >= 16)
+		{
+			ft_printhex((n / 16), format);
+			ft_printhex((n % 16), format);
+		}
+		else
+		{
+			if (n <= 9)
+				ft_putchar_fd((n + '0'), 1);
+			else
+				if (format == 'x')
+					ft_putchar_fd((n - 10 + 'a'), 1);
+				else if (format == 'X')
+					ft_putchar_fd((n - 10 + 'A'), 1);
+		}
+	return (ft_hexlen(n));
 }
-*/
+
 static int	ft_conversion(va_list args, const char format)
 {
 	int	len;
@@ -131,11 +157,11 @@ static int	ft_conversion(va_list args, const char format)
 		len += ft_printptr(va_arg(args, unsigned long long)); // por qué long long?
 	else if (format == 'd' || format == 'i')
 		len += ft_printnbr(va_arg(args, int));
-/*	else if (format == 'x' || format == 'X')
+	else if (format == 'x' || format == 'X')
 		len += ft_printhex(va_arg(args, unsigned int), format);
 	else if (format == 'u')
 		len += ft_printdecimal(va_arg(args, unsigned int));
-*/	else if (format == '%')
+	else if (format == '%')
 		len += ft_printchar('%');
 	return (len);
 }
@@ -167,15 +193,17 @@ int ft_printf(char const *format, ...)
 int	main ()
 {
 	char	c = 't';
-	char	str[] = "caca es mi amiga";
+	char	str[] = "";
 	char	*ptr = "hola";
 	int		num = -2147483648;
 
 	ft_printf("%c\n", c);
 	ft_printf("%s\n", str);
+	printf("Original: %s\n", str);
 	ft_printf("%p\n", *ptr);
 	ft_printf("%%\n");
-	printf("%X\n", 62);
+	ft_printf("%X\n", 62);
+	ft_printf("%x\n", 62);
 	ft_printf("%i\n", num);
 	return (0);
 }
