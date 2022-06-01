@@ -20,12 +20,12 @@ static int	ft_printchar(int c)
 	return (1);
 }
 
-/*static void	ft_putstr(char *str)
+static void	ft_putstr(char *str)
 {
 	while (*str++ != '\0')
 		write(1, &*str, 1);
 }
-*/
+
 static int	ft_printstr(char *str)
 {
 	int	i;
@@ -33,9 +33,7 @@ static int	ft_printstr(char *str)
 	i = 0;
 	if (str == NULL)
 	{
-		ft_strdup("");
-//		write(1, "(NULL)", 1);
-	//	ft_putstr("(NULL)"); // funcion recursiva?
+		ft_putstr("(NULL)");
 		return (6);
 	}
 	while (str[i])
@@ -48,10 +46,12 @@ static int	ft_printstr(char *str)
 
 static int	ft_printnbr(int n)
 {
+	int		len;
 	char	*num;
 	
+	len = 0;
 	num = ft_itoa(n);
-	//free num?
+	free(num);
 	return (ft_printstr(num));
 }
 
@@ -121,7 +121,7 @@ char	*ft_uitoa(unsigned int n)
 	int		len;
 	
 	len = ft_numlen(n);
-	num = malloc(sizeof(char *) * (len + 1));
+	num = (char *)malloc(sizeof(char) * (len + 1));
 	if (!num)
 		return (0);
 	num[len] = '\0';
@@ -157,7 +157,7 @@ static int	ft_hexlen(unsigned int n)
 	unsigned int	len;
 
 	len = 0;
-	while (n > 0)
+	while (n != 0)
 	{
 		len++;
 		n = n / 16;
@@ -170,7 +170,7 @@ static int	ft_printhex(unsigned int n, const char format)
 	if (n == 0)
 		write (1, "0", 1);	
 	else
-				if (n >= 16)
+		if (n >= 16)
 		{
 			ft_printhex((n / 16), format);
 			ft_printhex((n % 16), format);
@@ -180,10 +180,12 @@ static int	ft_printhex(unsigned int n, const char format)
 			if (n <= 9)
 				ft_putchar_fd((n + '0'), 1);
 			else
+			{
 				if (format == 'x')
 					ft_putchar_fd((n - 10 + 'a'), 1);
 				else if (format == 'X')
 					ft_putchar_fd((n - 10 + 'A'), 1);
+			}
 		}
 	return (ft_hexlen(n));
 }
@@ -233,22 +235,22 @@ int ft_printf(char const *format, ...)
 	va_end(args);
 	return (len);
 }
-/*
+
 int	main ()
 {
 	char	c = 't';
-	char	str[] = "";
+//	char	str[] = "";
 	char	*ptr = "hola";
 	int		num = -2147483648;
 
 	ft_printf("%c\n", c);
-	ft_printf("%s\n", str);
-	printf("Original: %s\n", str);
+	ft_printf(" NULL %s NULL ", NULL);
+//	printf("Original: NULL %s NULL\n", NULL);
 	ft_printf("%p\n", *ptr);
 	ft_printf("%%\n");
 	ft_printf("%X\n", 62);
-	ft_printf("%x\n", 62);
+	ft_printf("%x\n", 0);
 	ft_printf("%i\n", num);
 	return (0);
 }
-*/
+

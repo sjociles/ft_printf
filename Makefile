@@ -1,6 +1,6 @@
 
-#NAME = a.out
-NAME = libftprintf.a
+NAME = a.out
+#NAME = libftprintf.a
 
 SRCS = ft_printf.c 
 
@@ -33,12 +33,12 @@ all: ${NAME}
 
 ${NAME}: ${OBJS} $(HEADER)
 	@make -C $(LIBFT)
-	@cp $(LIBFT)/$(LIBFT).a . #needed for final lib
-	@mv $(LIBFT).a $(NAME) #needed for final lib
-#	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME}
+#	@cp $(LIBFT)/$(LIBFT).a . #needed for final lib
+#	@mv $(LIBFT).a $(NAME) #needed for final lib
+	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME} #comment to create lib
 	@echo "$(BLUE)${LIBFT}.a linked $(DEF_COLOR)"
-	@ar -crs ${NAME} ${OBJS}
-	@ranlib $(NAME)
+#	@ar -crs ${NAME} ${OBJS} #comment to create program
+#	@ranlib $(NAME) #comment to create program
 	@echo "$(BOLDGREEN)ft_printf compiled!$(DEF_COLOR)"
 
 clean:
