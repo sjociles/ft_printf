@@ -6,13 +6,13 @@
 /*   By: sjociles <sjociles@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 15:18:05 by sjociles          #+#    #+#             */
-/*   Updated: 2022/05/28 18:40:06 by sjociles         ###   ########.fr       */
+/*   Updated: 2022/06/01 16:51:16 by sjociles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/ft_printf.h"
 #include <stdio.h>
-
+#include <stddef.h>
 
 static int	ft_printchar(int c)
 {
@@ -22,8 +22,14 @@ static int	ft_printchar(int c)
 
 static void	ft_putstr(char *str)
 {
-	while (*str++ != '\0')
-		write(1, &*str, 1);
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
 }
 
 static int	ft_printstr(char *str)
@@ -33,7 +39,7 @@ static int	ft_printstr(char *str)
 	i = 0;
 	if (str == NULL)
 	{
-		ft_putstr("(NULL)");
+		ft_putstr("(null)");
 		return (6);
 	}
 	while (str[i])
@@ -49,6 +55,8 @@ static int	ft_printnbr(int n)
 	int		len;
 	char	*num;
 	
+	if (n == 0)
+		return (ft_printstr("0"));
 	len = 0;
 	num = ft_itoa(n);
 	free(num);
@@ -168,11 +176,14 @@ static int	ft_hexlen(unsigned int n)
 static int	ft_printhex(unsigned int n, const char format)
 {
 	if (n == 0)
-		write (1, "0", 1);	
+	{
+		write (1, "0", 1);
+		return (1);
+	}
 	else
 		if (n >= 16)
 		{
-			ft_printhex((n / 16), format);
+ 			ft_printhex((n / 16), format);
 			ft_printhex((n % 16), format);
 		}
 		else
@@ -190,7 +201,7 @@ static int	ft_printhex(unsigned int n, const char format)
 	return (ft_hexlen(n));
 }
 
-static int	ft_conversion(va_list args, const char format)
+int	ft_conversion(va_list args, const char format)
 {
 	int	len;
 
@@ -238,19 +249,18 @@ int ft_printf(char const *format, ...)
 
 int	main ()
 {
-	char	c = 't';
+//	char	c = 't';
 //	char	str[] = "";
-	char	*ptr = "hola";
-	int		num = -2147483648;
+//	char	*ptr = "hola";
+//	int		num = -2147483648;
 
-	ft_printf("%c\n", c);
-	ft_printf(" NULL %s NULL ", NULL);
-//	printf("Original: NULL %s NULL\n", NULL);
-	ft_printf("%p\n", *ptr);
-	ft_printf("%%\n");
-	ft_printf("%X\n", 62);
-	ft_printf("%x\n", 0);
-	ft_printf("%i\n", num);
+//	ft_printf("%c\n", c);
+//	ft_printf("%d\n", -10);
+//	printf("%d\n", -10);
+	ft_printf("X%s/3G,%sE73>%i\ra%dcybgx!", "I7^44p,#\\+zvD\tk\n", "S\r8<N}4PV9!\rqNnWe*mDIFl)YY,{ #qdl,\r\\1L $\\\n\n", -1616717919, -1634989699);
+	printf("X%s/3G,%sE73>%i\ra%dcybgx!", "I7^44p,#\\+zvD\tk\n", "S\r8<N}4PV9!\rqNnWe*mDIFl)YY,{ #qdl,\r\\1L $\\\n", -1616717919, -1634989699);
+//	ft_printf("%X\n", 62);
+//	ft_printf("%x\n", 0);
+//	ft_printf("%i\n", num);
 	return (0);
 }
-
