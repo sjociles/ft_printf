@@ -12,48 +12,49 @@
 
 #include "inc/ft_printf.h"
 
-int	ft_conversion(va_list args, const char format)
+int	ft_printchar(int c)
 {
-	int	len;
-
-	len = 0;
-	if (format == 'c')
-		len += ft_printchar(va_arg(args, int));
-	else if (format == 's')
-		len += ft_printstr(va_arg(args, char *));
-	else if (format == 'p')
-		len += ft_printptr(va_arg(args, unsigned long long));
-	else if (format == 'd' || format == 'i')
-		len += ft_printnbr(va_arg(args, int));
-	else if (format == 'x' || format == 'X')
-		len += ft_printhex(va_arg(args, unsigned int), format);
-	else if (format == 'u')
-		len += ft_printu(va_arg(args, unsigned int));
-	else if (format == '%')
-		len += ft_printchar('%');
-	return (len);
+	write(1, &c, 1);
+	return (1);
 }
 
-int	ft_printf(char const *format, ...)
+void	ft_putstr(char *str)
 {
-	int		i;
-	va_list	args;
-	int		len;
+	int	i;
 
-	va_start(args, format);
 	i = 0;
-	len = 0;
-	while (format[i] != '\0')
+	while (str[i])
 	{
-		if (format[i] == '%')
-		{
-			len += ft_conversion(args, format[i + 1]);
-			i++;
-		}
-		else
-			len += ft_printchar(format[i]);
+		write(1, &str[i], 1);
 		i++;
 	}
-	va_end(args);
+}
+
+int	ft_printstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+	{
+		ft_putstr("(null)");
+		return (6);
+	}
+	while (str[i])
+	{
+		write(1, &str[i], 1);
+		i++;
+	}
+	return (i);
+}
+
+int	ft_printnbr(int n)
+{
+	char	*num;
+	int		len;
+
+	num = ft_itoa(n);
+	len = ft_printstr(num);
+	free(num);
 	return (len);
 }

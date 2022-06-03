@@ -12,72 +12,77 @@
 
 #include "libft.h"
 
-void	ft_strrev(char *str)
+static void	ft_isneg(int *n, int *neg, int *tmp)
 {
-	size_t	i;
-	size_t	j;
-	char	tmp;
-
-	j = ft_strlen(str) - 1;
-	i = 0;
-	while (i < j)
+	if (*n == -2147483648)
 	{
-		tmp = str[i];
-		str[i] = str[j];
-		str[j] = tmp;
-		i++;
-		j--;
+		*n = *n + 1;
+		*neg = -1;
+		*tmp = 1;
+		*n = *n * -1;
+	}
+	else if (*n < 0)
+	{
+		*neg = -1;
+		*n = *n * -1;
+		*tmp = 0;
+	}
+	else if (*n >= 0)
+	{
+		*neg = 1;
+		*tmp = 0;
 	}
 }
 
-int	ft_count(int n)
+static int	ft_itoa_len(int n)
 {
 	int	len;
 
 	len = 0;
-	if (n == 0)
-		return (1);
-	while (n > 0)
+	while (n > 9)
 	{
 		n = n / 10;
 		len++;
 	}
+	len++;
 	return (len);
 }
 
-void	ft_convert(int n, char *str, int negative)
+static void	ft_itoa_write(char *str, int len, int n, int tmp)
 {
-	size_t	len;
-
-	len = 0;
-	while (n != 0)
+	while (n > 9)
 	{
-		str[len++] = '0' + (n % 10);
-		n = (n / 10);
+		str[len--] = (n % 10) + '0' + tmp;
+		n = n / 10;
+		tmp = 0;
 	}
-	if (negative)
-		str[len] = '-';
+	str[len] = n + '0';
 }
 
 char	*ft_itoa(int n)
 {
+	int		neg;
+	int		tmp;
+	int		len;
 	char	*str;
-	int		negative;
 
-	if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
-	negative = (n < 0);
-	if (negative)
-		n = -n;
-	str = ft_calloc((ft_count(n) + 1 + negative), sizeof(char));
-	if (!str)
-		return (NULL);
-	if (n == 0)
+	ft_isneg(&n, &neg, &tmp);
+	len = ft_itoa_len(n);
+	if (neg == -1)
 	{
-		str[0] = '0';
-		return (str);
+		str = malloc((len + 2) * sizeof(char));
+		if (!str)
+			return (0);
+		len++;
+		str[0] = '-';
 	}
-	ft_convert(n, str, negative);
-	ft_strrev(str);
+	else
+	{
+		str = malloc((len + 1) * sizeof(char));
+		if (!str)
+			return (0);
+	}
+	str[len--] = '\0';
+	ft_itoa_write(str, len, n, tmp);
 	return (str);
 }

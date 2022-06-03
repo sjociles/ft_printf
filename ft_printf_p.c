@@ -12,48 +12,47 @@
 
 #include "inc/ft_printf.h"
 
-int	ft_conversion(va_list args, const char format)
+int	ft_printptrlen(unsigned long long n)
 {
 	int	len;
 
 	len = 0;
-	if (format == 'c')
-		len += ft_printchar(va_arg(args, int));
-	else if (format == 's')
-		len += ft_printstr(va_arg(args, char *));
-	else if (format == 'p')
-		len += ft_printptr(va_arg(args, unsigned long long));
-	else if (format == 'd' || format == 'i')
-		len += ft_printnbr(va_arg(args, int));
-	else if (format == 'x' || format == 'X')
-		len += ft_printhex(va_arg(args, unsigned int), format);
-	else if (format == 'u')
-		len += ft_printu(va_arg(args, unsigned int));
-	else if (format == '%')
-		len += ft_printchar('%');
+	while (n != 0)
+	{
+		len++;
+		n = n / 16;
+	}
 	return (len);
 }
 
-int	ft_printf(char const *format, ...)
+void	ft_ptrhex(unsigned long long n)
 {
-	int		i;
-	va_list	args;
-	int		len;
-
-	va_start(args, format);
-	i = 0;
-	len = 0;
-	while (format[i] != '\0')
+	if (n >= 16)
 	{
-		if (format[i] == '%')
-		{
-			len += ft_conversion(args, format[i + 1]);
-			i++;
-		}
-		else
-			len += ft_printchar(format[i]);
-		i++;
+		ft_ptrhex(n / 16);
+		ft_ptrhex(n % 16);
 	}
-	va_end(args);
+	else
+	{
+		if (n <= 9)
+			ft_putchar_fd((n + '0'), 1);
+		else
+			ft_putchar_fd((n - 10 + 'a'), 1);
+	}
+}
+
+int	ft_printptr(unsigned long long ptr)
+{
+	int	len;
+
+	len = 0;
+	len += write(1, "0x", 2);
+	if (ptr == 0)
+		len += write(1, "0", 1);
+	else
+	{
+		ft_ptrhex(ptr);
+		len += ft_printptrlen(ptr);
+	}
 	return (len);
 }

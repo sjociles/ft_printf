@@ -12,48 +12,48 @@
 
 #include "inc/ft_printf.h"
 
-int	ft_conversion(va_list args, const char format)
+int	ft_hexlen(unsigned int n)
 {
-	int	len;
+	unsigned int	len;
 
 	len = 0;
-	if (format == 'c')
-		len += ft_printchar(va_arg(args, int));
-	else if (format == 's')
-		len += ft_printstr(va_arg(args, char *));
-	else if (format == 'p')
-		len += ft_printptr(va_arg(args, unsigned long long));
-	else if (format == 'd' || format == 'i')
-		len += ft_printnbr(va_arg(args, int));
-	else if (format == 'x' || format == 'X')
-		len += ft_printhex(va_arg(args, unsigned int), format);
-	else if (format == 'u')
-		len += ft_printu(va_arg(args, unsigned int));
-	else if (format == '%')
-		len += ft_printchar('%');
+	while (n != 0)
+	{
+		len++;
+		n = n / 16;
+	}
 	return (len);
 }
 
-int	ft_printf(char const *format, ...)
+void	ft_hexing(unsigned int n, const char format)
 {
-	int		i;
-	va_list	args;
-	int		len;
-
-	va_start(args, format);
-	i = 0;
-	len = 0;
-	while (format[i] != '\0')
+	if (n <= 9)
+		ft_putchar_fd((n + '0'), 1);
+	else
 	{
-		if (format[i] == '%')
+		if (format == 'x')
+			ft_putchar_fd((n - 10 + 'a'), 1);
+		else if (format == 'X')
+			ft_putchar_fd((n - 10 + 'A'), 1);
+	}
+}
+
+int	ft_printhex(unsigned int n, const char format)
+{
+	if (n == 0)
+	{
+		write (1, "0", 1);
+		return (1);
+	}
+	else
+	{
+		if (n >= 16)
 		{
-			len += ft_conversion(args, format[i + 1]);
-			i++;
+			ft_printhex((n / 16), format);
+			ft_printhex((n % 16), format);
 		}
 		else
-			len += ft_printchar(format[i]);
-		i++;
+			ft_hexing(n, format);
 	}
-	va_end(args);
-	return (len);
+	return (ft_hexlen(n));
 }

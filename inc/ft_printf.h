@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_printf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sjociles <sjociles@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,26 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdarg.h>
-/*
-typedef struct s_option
-{
-    int		flag_minus;
-    int		flag_zero;
-    int		width;
-    int		dot;	     // to know if there is precision
-    int		precision;   // initially set as -1 instead of 0
-    int		flag_pre_va; // if precision is a variable argument
-    int		num_m;	     // is number negative?
-    char	type;
- } t_option;
-*/
+
+int		ft_printf(char const *format, ...);
+int		ft_printchar(int c);
+int		ft_printstr(char *str);
+int		ft_printnbr(int n);
+int		ft_printptrlen(unsigned long long n);
+int		ft_printptr(unsigned long long ptr);
+int		ft_numlen(unsigned int n);
+int		ft_printu(unsigned int n);
+int		ft_hexlen(unsigned int n);
+int		ft_printhex(unsigned int n, const char format);
+int		ft_conversion(va_list args, const char format);
+char	*ft_uitoa(unsigned int n);
+void	ft_putstr(char *str);
+void	ft_ptrhex(unsigned long long n);
+void	ft_hexing(unsigned int n, const char format);
+
 typedef struct s_list
 {
 	void			*content;

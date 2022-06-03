@@ -12,48 +12,53 @@
 
 #include "inc/ft_printf.h"
 
-int	ft_conversion(va_list args, const char format)
+int	ft_numlen(unsigned int n)
 {
-	int	len;
+	unsigned int	len;
+	unsigned int	num;
 
 	len = 0;
-	if (format == 'c')
-		len += ft_printchar(va_arg(args, int));
-	else if (format == 's')
-		len += ft_printstr(va_arg(args, char *));
-	else if (format == 'p')
-		len += ft_printptr(va_arg(args, unsigned long long));
-	else if (format == 'd' || format == 'i')
-		len += ft_printnbr(va_arg(args, int));
-	else if (format == 'x' || format == 'X')
-		len += ft_printhex(va_arg(args, unsigned int), format);
-	else if (format == 'u')
-		len += ft_printu(va_arg(args, unsigned int));
-	else if (format == '%')
-		len += ft_printchar('%');
+	num = n;
+	while (num != 0)
+	{
+		len++;
+		num = num / 10;
+	}
 	return (len);
 }
 
-int	ft_printf(char const *format, ...)
+char	*ft_uitoa(unsigned int n)
 {
-	int		i;
-	va_list	args;
+	char	*num;
 	int		len;
 
-	va_start(args, format);
-	i = 0;
-	len = 0;
-	while (format[i] != '\0')
+	len = ft_numlen(n);
+	num = (char *)malloc(sizeof(char) * (len + 1));
+	if (!num)
+		return (0);
+	num[len] = '\0';
+	while (n != 0)
 	{
-		if (format[i] == '%')
-		{
-			len += ft_conversion(args, format[i + 1]);
-			i++;
-		}
-		else
-			len += ft_printchar(format[i]);
-		i++;
+		num[len - 1] = n % 10 + 48;
+		n = n / 10;
+		len--;
 	}
-	va_end(args);
+	return (num);
+}
+
+int	ft_printu(unsigned int n)
+{
+	int		len;
+	char	*num;
+
+	len = 0;
+	if (n == 0)
+		len += write(1, "0", 1);
+	else
+	{
+		num = ft_uitoa(n);
+		len += ft_printstr(num);
+		free(num);
+	}
 	return (len);
 }

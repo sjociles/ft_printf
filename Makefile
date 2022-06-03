@@ -1,8 +1,8 @@
 
-NAME = a.out
-#NAME = libftprintf.a
+#NAME = a.out
+NAME = libftprintf.a
 
-SRCS = ft_printf.c 
+SRCS = ft_printf.c ft_printf_x.c ft_printf_u.c ft_printf_p.c ft_printf_dis.c \
 
 OBJS = $(SRCS:%.c=%.o)
 
@@ -33,12 +33,12 @@ all: ${NAME}
 
 ${NAME}: ${OBJS} $(HEADER)
 	@make -C $(LIBFT)
-#	@cp $(LIBFT)/$(LIBFT).a . #needed for final lib
-#	@mv $(LIBFT).a $(NAME) #needed for final lib
-	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME} #comment to create lib
+	@cp $(LIBFT)/$(LIBFT).a . #needed for final lib
+	@mv $(LIBFT).a $(NAME) #needed for final lib
+#	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME} #comment to create lib
 	@echo "$(BLUE)${LIBFT}.a linked $(DEF_COLOR)"
-#	@ar -crs ${NAME} ${OBJS} #comment to create program
-#	@ranlib $(NAME) #comment to create program
+	@ar -crs ${NAME} ${OBJS} #comment to create program
+	@ranlib $(NAME) #comment to create program
 	@echo "$(BOLDGREEN)ft_printf compiled!$(DEF_COLOR)"
 
 clean:
