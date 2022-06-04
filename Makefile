@@ -31,20 +31,20 @@ BOLDGREEN = \033[1;32m
 
 all: ${NAME}
 
-${NAME}: ${OBJS} $(HEADER)
+${NAME}: ${OBJS}
 	@make -C $(LIBFT)
 	@cp $(LIBFT)/$(LIBFT).a . #needed for final lib
 	@mv $(LIBFT).a $(NAME) #needed for final lib
 #	@${CC} ${OBJS} ${LIBFT}/${LIBFT}.a -o ${NAME} #comment to create lib
 	@echo "$(BLUE)${LIBFT}.a linked $(DEF_COLOR)"
 	@ar -crs ${NAME} ${OBJS} #comment to create program
-	@ranlib $(NAME) #comment to create program
+#	@ranlib $(NAME) #comment to create program
 	@echo "$(BOLDGREEN)ft_printf compiled!$(DEF_COLOR)"
 
 clean:
 	@${RM} ${OBJS}
+	@make clean -C $(LIBFT)
 	@echo "$(CYAN)ft_pintf and libft objects files cleaned!$(DEF_COLOR)"
-	@${RM} ${LIBFT}/%.o
 
 fclean: clean
 	@${RM} ${NAME}
